@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Catatan Hutang</title>
+<link rel="manifest" href="manifest.json">
+</head><body>
+<h1>Catatan Hutang</h1>
+<input id="nama" placeholder="Nama">
+<input id="jumlah" type="number" placeholder="Jumlah">
+<button onclick="tambah()">Tambah</button>
+<ul id="list"></ul>
+<script>
+let data=JSON.parse(localStorage.getItem('hutang')||'[]');
+function simpan(){localStorage.setItem('hutang',JSON.stringify(data));render();}
+function tambah(){
+ const n=nama.value,j=Number(jumlah.value);
+ if(!n||!j)return;
+ data.push({n,j}); simpan();
+}
+function hapus(i){data.splice(i,1);simpan();}
+function render(){
+ list.innerHTML='';
+ data.forEach((x,i)=>list.innerHTML+=`<li>${x.n}: Rp ${x.j.toLocaleString('id-ID')} <button onclick="hapus(${i})">Hapus</button></li>`);
+}
+render();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
+</script></body></html>
